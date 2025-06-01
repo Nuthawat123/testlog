@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>log in</title>
+    <link rel="stylesheet" href="login1.css" />
+  </head>
+  <body>
+    <div>
+      <form id="loginform" action="page2.html" method="post">
+        <input id="email" type="email" placeholder="Email" />
+        <div>
+          <input type="password" id="pass" placeholder="password" />
+          <span class="eye-icon" onclick="togglePassword()">👁️</span>
+        </div>
+        <button type="submit" id="bt" disabled>sign in</button>
+      </form>
+    </div>
+    <script>
+      function togglePassword() {
+        const input = document.getElementById("pass");
+        const eye = document.querySelector(".eye-icon");
+
+        if (input.type === "password") {
+          input.type = "text";
+          eye.textContent = "🙈";
+        } else {
+          input.type = "password";
+          eye.textContent = "👁️";
+        }
+      }
+
+      const usernameInput = document.getElementById("email");
+      const passwordInput = document.getElementById("pass");
+      const loginBtn = document.getElementById("bt");
+
+      function checkInput() {
+        if (
+          usernameInput.value.trim() !== "" &&
+          passwordInput.value.trim() !== ""
+        ) {
+          loginBtn.disabled = false;
+          loginBtn.classList.add("enabled");
+        } else {
+          loginBtn.disabled = true;
+          loginBtn.classList.remove("enabled");
+        }
+      }
+
+      usernameInput.addEventListener("input", checkInput);
+      passwordInput.addEventListener("input", checkInput);
+    </script>
+
+    <script src="logg.js"></script>
+
+    <script>
+      //ส่งข้อมูล
+            document.getElementById("loginform").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("email").value;
+            const password = document.getElementById("pass").value;
+
+            const response = await fetch("http://localhost:3000/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ 
+                username, 
+                password, 
+                })
+              
+            });
+
+//เปลี่ยนหน้าเว็บ
+          if (response.ok) {
+            window.location.href = 'page2.html';
+          } else {
+            alert('Login failed. Please check your credentials.');
+          }
+
+        });
+
+        
+     
+       
+    
+          
+    </script>
+  </body>
+</html>
